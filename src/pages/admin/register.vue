@@ -84,14 +84,14 @@
           alert("两次输入的密码不一致！");
           return false;
         }else{
-          axios.get('http://localhost:3000/users/register', {
+         /* axios.post('http://localhost:3000/users/register', {
             params:{
               userName:this.ruleForm2.userName,
               userPwd:this.ruleForm2.pass
-            },
+            }/!*,
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-            }
+            }*!/
           }).then(function (res) {
             //成功获取数据
             console.log(res);
@@ -99,7 +99,7 @@
           }).catch(function (err) {
             //请求错误
             console.log(err);
-          });
+          });*/
         }
       },
       submitForm(formName) {

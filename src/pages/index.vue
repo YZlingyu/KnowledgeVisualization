@@ -62,6 +62,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   var screenWidth = document.body.clientWidth;
   var screenHeight = document.body.clientHeight;
   export default {
@@ -86,7 +87,22 @@
           that.width1 = window.width1
           that.height1 = window.height1
         })()
-      }
+      };
+
+      /*axios.get("http://localhost:3000/users/checklogin",{
+
+      }).then(function (res) {
+        //成功获取数据
+        console.log(res.data.log);
+        //console.log(req.session);
+        if(res.data.log==0){
+          //alert("false");
+         // window.location.href="/#/admin/login";
+        }
+      }).catch(function (err) {
+        //请求错误
+        console.log(err);
+      });*/
     },
    watch: {
      width1 (val) {

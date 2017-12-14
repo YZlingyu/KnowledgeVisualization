@@ -186,7 +186,7 @@
       var tooltips = ["出货量是","百万台"]
       var color=["#086cff","#15BCFF","#20F2FF","#25FFDF","#27FFA5","#21FF70","#FFFD66"];
       var property={
-        title: "各公司手机销售情况",
+        title: "请输入标题",
         theme: "#000",
         width: width,
         height: height,

@@ -77,7 +77,7 @@
           alert("请将信息填写完全！");
           return;
         }else{
-          axios.get("http://localhost:3000/users/login",{
+         /* axios.post("http://localhost:3000/users/login",{
             params:{
               userName:this.ruleForm2.userName,
               userPwd:this.ruleForm2.pass
@@ -87,17 +87,18 @@
             }
           }).then(function (res) {
             //成功获取数据
-            console.log(res);
-            if(res.data.status==0){
-              alert("登录成功");
-              window.location.href="../datatoload/data";
+            console.log(res.status);
+            if(res.status==200){
+
+              //alert("登录成功");
+              //window.location.href="../#/";
             }else{
               alert("用户名或密码错误");
             }
           }).catch(function (err) {
             //请求错误
             console.log(err);
-          });
+          });*/
         }
       }
     }

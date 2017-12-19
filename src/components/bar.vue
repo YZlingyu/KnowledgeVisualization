@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1 class="title3">条形图</h1>
+    <el-button type="primary" class="primary" @click="handleSave();">保存</el-button>
     <hr>
     <el-row>
       <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10">
@@ -52,7 +53,7 @@
               <el-color-picker v-model="color3"></el-color-picker>
             </div>
           </el-row>
-        </div>
+          </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
         <div class="box right-box">
@@ -60,16 +61,17 @@
         </div>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
 <script>
   import barGraph from "./graph/barGraph.vue"
-
+  import axios from 'axios'
   export default {
     data() {
       return {
-        color1: '#4682B4',
+        color1: '#ffffff',
         input1: '',
         input2: '',
         input3: '',
@@ -110,14 +112,57 @@
           label: 'STXinwei'
         }],
         value2: '',
-        color2: '#409EFF',
+        color2: '#ffffff',
         color3: '#ffffff'
 
+      }
+    },
+    methods:{
+      handleSave(){
+        axios.post("",{
+          params:{
+            dataset: this.value1,
+            objectName: this.input1,
+            rectColor: this.color1,
+            selectColor: this.color2,
+            fontFamily: this.value2,
+            fontSize: this.input5,
+            fontColor: this.color3
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then(function (res) {
+          //成功获取数据
+          console.log(res.status);
+          if(res.status==200){
+
+            //alert("登录成功");
+            //window.location.href="../#/";
+          }else{
+            alert("用户名或密码错误");
+          }
+        }).catch(function (err) {
+          //请求错误
+          console.log(err);
+        });
       }
     },
     mounted(){
       if(document.getElementsByClassName("left-box")[0].offsetHeight<document.getElementsByClassName("right-box")[0].offsetHeight){
         document.getElementsByClassName("left-box")[0].style.height=document.getElementsByClassName("right-box")[0].offsetHeight-20+"px";
+      }
+      this.handleSave();
+    },
+    watch:{
+      color1(){
+        this.input2 = this.color1;
+      },
+      color2(){
+        this.input3 = this.color2;
+      },
+      color3(){
+        this.input6 = this.color3;
       }
     },
     components: {
@@ -126,15 +171,10 @@
   }
 </script>
 
-<style>
+<style scoped>
   .title3, .para{
     display: inline-block;
     margin-left:30px;
-  }
-  .primary{
-    float: right;
-    margin-right: 20px;
-    margin-top: 15px;
   }
   .box{
     width: 90%;
@@ -190,6 +230,11 @@
     color: #ccc;
     font-size:12px;
     margin-left: 95px;
+  }
+  .primary{
+    float: right;
+    margin-right: 20px;
+    margin-top: 15px;
   }
 </style>
 

@@ -86,6 +86,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import forceGraph from "./graph/forceGraph.vue"
   export default {
     data() {
@@ -151,9 +152,46 @@
         document.getElementsByClassName("left-box")[0].style.height=document.getElementsByClassName("right-box")[0].offsetHeight-20+"px";
       }
     },
+    watch:{
+      color1(){
+        this.input2 = this.color1;
+      },
+      color2(){
+        this.input3 = this.color2;
+      },
+      color3(){
+        this.input6 = this.color3;
+      }
+    },
     methods:{
       handleSave(){
-        console.log(this.datatoload.value1);
+        axios.post("",{
+          params:{
+            dataset: this.value1,
+            objectName: this.input1,
+            rectColor: this.color1,
+            selectColor: this.color2,
+            fontFamily: this.value2,
+            fontSize: this.input5,
+            fontColor: this.color3
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then(function (res) {
+          //成功获取数据
+          console.log(res.status);
+          if(res.status==200){
+
+            //alert("登录成功");
+            //window.location.href="../#/";
+          }else{
+            alert("用户名或密码错误");
+          }
+        }).catch(function (err) {
+          //请求错误
+          console.log(err);
+        });
       }
     }
   };

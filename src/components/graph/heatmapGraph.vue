@@ -13,152 +13,81 @@
       }
     },
     mounted() {
-      var array_data = [];
-      // 一句话定义了众多变量， 定义了块儿的位置、宽高、小格子的边长等等与布局有关的变量
-      var margin = { top: 50, right: 0, bottom: 100, left: 150 },
-        width = 960 - margin.left - margin.right,        // 所有格子区域的宽度，即Heatmap的宽度
-        height = 1830 - margin.top - margin.bottom,
-        gridSize = Math.floor(width / 24),    // 求地板，即去掉小数部分，width分成24份
-        legendElementWidth = gridSize * 2,    // 底下长条的长度，是格子边长的两倍
-        buckets = 9,        // 一共9种颜色级别
-        colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],
-        // alternatively colorbrewer.YlGnBu[9]
-        //days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-        //times = ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "9a", "10a", "11a", "12a", "1p", "2p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "10p", "11p", "12p"];
-        tests = ["G","MIN","PTS","FGM","FGA","FGP","FTM","FTA","FTP","3PM","3PA","3PP","ORB","DRB","TRB","AST","STL","BLK","TO","PF"];
+      let echarts = require('echarts/lib/echarts');
+      let myChart = echarts.init(document.getElementById('main3'));
+      var hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a',
+        '7a', '8a', '9a','10a','11a',
+        '12p', '1p', '2p', '3p', '4p', '5p',
+        '6p', '7p', '8p', '9p', '10p', '11p'];
+      var days = ['Saturday', 'Friday', 'Thursday',
+        'Wednesday', 'Tuesday', 'Monday', 'Sunday'];
 
-      // 设置chart，svg
-      var svg = d3.select("#main3").append("svg") // 选择“chart”（就是div），加入一个svg，设置属性跟div一样大
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
-      svg.append("g")   // 在svg内加入一个g（group组），并设置元素g的显示位置
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      // 函数，读取 CSV 文件
-      d3.csv("/static/ball_data.csv", //function(d) {}, function(error, data) {} );
+      var data = [[0,0,5],[0,1,1],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0],[0,8,0],[0,9,0],[0,10,0],[0,11,2],[0,12,4],[0,13,1],[0,14,1],[0,15,3],[0,16,4],[0,17,6],[0,18,4],[0,19,4],[0,20,3],[0,21,3],[0,22,2],[0,23,5],[1,0,7],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[1,7,0],[1,8,0],[1,9,0],[1,10,5],[1,11,2],[1,12,2],[1,13,6],[1,14,9],[1,15,11],[1,16,6],[1,17,7],[1,18,8],[1,19,12],[1,20,5],[1,21,5],[1,22,7],[1,23,2],[2,0,1],[2,1,1],[2,2,0],[2,3,0],[2,4,0],[2,5,0],[2,6,0],[2,7,0],[2,8,0],[2,9,0],[2,10,3],[2,11,2],[2,12,1],[2,13,9],[2,14,8],[2,15,10],[2,16,6],[2,17,5],[2,18,5],[2,19,5],[2,20,7],[2,21,4],[2,22,2],[2,23,4],[3,0,7],[3,1,3],[3,2,0],[3,3,0],[3,4,0],[3,5,0],[3,6,0],[3,7,0],[3,8,1],[3,9,0],[3,10,5],[3,11,4],[3,12,7],[3,13,14],[3,14,13],[3,15,12],[3,16,9],[3,17,5],[3,18,5],[3,19,10],[3,20,6],[3,21,4],[3,22,4],[3,23,1],[4,0,1],[4,1,3],[4,2,0],[4,3,0],[4,4,0],[4,5,1],[4,6,0],[4,7,0],[4,8,0],[4,9,2],[4,10,4],[4,11,4],[4,12,2],[4,13,4],[4,14,4],[4,15,14],[4,16,12],[4,17,1],[4,18,8],[4,19,5],[4,20,3],[4,21,7],[4,22,3],[4,23,0],[5,0,2],[5,1,1],[5,2,0],[5,3,3],[5,4,0],[5,5,0],[5,6,0],[5,7,0],[5,8,2],[5,9,0],[5,10,4],[5,11,1],[5,12,5],[5,13,10],[5,14,5],[5,15,7],[5,16,11],[5,17,6],[5,18,0],[5,19,5],[5,20,3],[5,21,4],[5,22,2],[5,23,0],[6,0,1],[6,1,0],[6,2,0],[6,3,0],[6,4,0],[6,5,0],[6,6,0],[6,7,0],[6,8,0],[6,9,0],[6,10,1],[6,11,0],[6,12,2],[6,13,1],[6,14,3],[6,15,4],[6,16,0],[6,17,0],[6,18,0],[6,19,0],[6,20,1],[6,21,2],[6,22,2],[6,23,6]];
 
-        // 每一行的数据
-        /*function(d) {
-          return {
-            day: +d.day,
-            hour: +d.hour,
-            value: +d.value
-          };
-        },*/
+      data = data.map(function (item) {
+        return [item[1], item[0], item[2] || '-'];
+      });
 
-        function(error, data) {
-          /*if(error){
-              console.log(error);
+      var option = {
+        tooltip: {
+          position: 'top'
+        },
+        animation: false,
+        grid: {
+          height: '50%',
+          y: '10%'
+        },
+        xAxis: {
+          type: 'category',
+          data: hours,
+          splitArea: {
+            show: true
           }
-          console.log(csvdata);*/
-          // colorScale：颜色级别
-          var colorScale = d3.scale.quantile()        // 按分位数取值，可使每个区域内元素个数相等
-            .domain([0, buckets - 1, d3.max(data, function (d) { return d.G; })])  // 定义域
-            // domain([0, n, 数据的最大值]);
-            .range(colors);    // 值域：是颜色数组，函数的返回值是代表某种颜色的字符串
-
-
-
-          // 编辑姓名行
-          var dayLabels = svg.selectAll(".nameLabel")
-            .data(data)
-            .enter()    // 为data中每一项创建一个".dayLabel"
-            .append("text")    // 为days中每一项创建一的".dayLabel"添加文本，下面全是设置文本的属性
-            .text(function (d, i) { return data[i].name; })
-            .attr("x", 0)
-            .attr("y", function (d, i) { return i * gridSize; })
-            .style("text-anchor", "end")
-            .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
-            .attr("class", function (d, i)
-              { return ((i >= 0 && i <= 4) ? "nameLabel mono axis axis-workweek" : "nameLabel mono axis"); }
-            );
-
-          // 编辑测试项行
-          var timeLabels = svg.selectAll(".testLabel")
-            .data(tests)
-            .enter().append("text")
-            .text(function(d) { return d; })
-            .attr("x", function(d, i) { return i * gridSize; })
-            .attr("y", 0)
-            .style("text-anchor", "middle")
-            .attr("transform", "translate(" + gridSize / 2 + ", -6)")
-            .attr("class", function(d, i) {
-              return ((i >= 7 && i <= 16) ? "testLabel mono axis axis-worktime" : "testLabel mono axis"); }
-            );
-
-          // 画出格子，暂不涂色，color[0]
-          for (var i = 0; i < 50; i++){
-            array_data[i*20] = data[i].G;
-            array_data[i*20+1] = data[i].MIN;
-            array_data[i*20+2] = data[i].PTS;
-            array_data[i*20+3] = data[i].FGM;
-            array_data[i*20+4] = data[i].FGA;
-            array_data[i*20+5] = data[i].FGP;
-            array_data[i*20+6] = data[i].FTM;
-            array_data[i*20+7] = data[i].FTA;
-            array_data[i*20+8] = data[i].FTP;
-            array_data[i*20+9] = data[i].P3PM;
-            array_data[i*20+10] = data[i].P3PA;
-            array_data[i*20+11] = data[i].P3PP;
-            array_data[i*20+12] = data[i].ORB;
-            array_data[i*20+13] = data[i].DRB;
-            array_data[i*20+14] = data[i].TRB;
-            array_data[i*20+15] = data[i].AST;
-            array_data[i*20+16] = data[i].STL;
-            array_data[i*20+17] = data[i].BLK;
-            array_data[i*20+18] = data[i].TO;
-            array_data[i*20+19] = data[i].PF;
+        },
+        yAxis: {
+          type: 'category',
+          data: days,
+          splitArea: {
+            show: true
           }
-
-
-          var heatMap = svg.selectAll(".score")
-            .data(array_data)
-            .enter()        // 为data中每一项创建一个".hour"
-            .append("rect")
-            .attr("x", function(d, i){ return (i % 20)*gridSize;})
-            .attr("y", function(d, i){ return parseInt(i / 20)*gridSize;})
-            .attr("rx", 6)
-            .attr("ry", 6)
-            .attr("class", "hour bordered")
-            .attr("width", gridSize)
-            .attr("height", gridSize)
-            .style("fill", "#FFFFFF");
-
-          // duration(1000) 在1000ns也就是1s内将格子图上色
-          heatMap.transition().duration(1000)
-            .style("fill", function(d) { return colorScale(d); });
-
-          // 鼠标停留显示value
-          heatMap.append("title").text(function(d) { return d.G; });
-
-          // legend 是一个有7个组的什么东西，，，
-          var legend = svg.selectAll(".legend")
-            .data([0].concat(colorScale.quantiles()), function(d) { return d; })    // 由data获得的元素个数为7
-            .enter().append("g")
-            .attr("class", "legend");
-
-          legend.append("rect")
-            .attr("x", function(d, i) { return legendElementWidth * i; })
-            .attr("y", height)
-            .attr("width", legendElementWidth)
-            .attr("height", gridSize / 2)
-            .style("fill", function(d, i) { return colors[i]; });
-
-          legend.append("text")
-            .attr("class", "mono")
-            .text(function(d) { return ">= "+Math.round(d); })
-            .attr("x", function(d, i) { return legendElementWidth * i; })
-            .attr("y", height + gridSize);
-
-        });
+        },
+        visualMap: {
+          min: 0,
+          max: 10,
+          calculable: true,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: '15%'
+        },
+        series: [{
+          name: 'Punch Card',
+          type: 'heatmap',
+          data: data,
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }]
+      };
+      myChart.setOption(option);
     }
   }
 </script>
 
 <style>
   #main3{
-    margin: 0 auto;
+    margin: 30px auto;
     text-align: center;
     vertical-align: middle;
+    height: 500px;
+    width:500px;
   }
 </style>
 

@@ -5,9 +5,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
+import 'jquery/dist/jquery.js'
 import d3 from 'd3'
 import echarts from 'echarts'
-
 
 Vue.use(d3)
 

@@ -89,7 +89,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .title3, .many-items, .para, .para-input{
     display: inline-block;
   }

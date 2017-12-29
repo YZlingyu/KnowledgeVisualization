@@ -197,7 +197,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   .title3, .para{
     display: inline-block;
     margin-left:30px;

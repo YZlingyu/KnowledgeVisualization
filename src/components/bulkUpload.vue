@@ -7,10 +7,11 @@
    <el-upload
       class="upload-demo"
       drag
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action=""
       :on-preview="handlePreview"
       :on-success="handleAvatarSuccess"
       :on-remove="handleRemove"
+      :data="uploadData"
       multiple
       :limit="3"
       :on-exceed="handleExceed"
@@ -29,7 +30,11 @@
     data() {
       return {
         input1: '',
-        fileList: []
+        fileList: [],
+        uploadData:{
+          uploadTime: "",
+          datasetId: ""
+        }
       };
     },
     methods: {
@@ -60,16 +65,40 @@
         const isLt2M = file.size / 1024 / 1024 < 2;
 
         if (!isCSV) {
-          this.$message.error('上传头像图片只能是 csv 格式!');
+          this.$message.error('上传文件只能是 csv 格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传文件大小不能超过 2MB!');
         }
         return isCSV && isLt2M;
+      },
+      handleSave(){
+        axios.post("",{
+          params:{
+            dataset: this.input1,
+
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then(function (res) {
+          //成功获取数据
+          console.log(res.status);
+          if(res.status==200){
+
+            //alert("登录成功");
+            //window.location.href="../#/";
+          }else{
+            alert("用户名或密码错误");
+          }
+        }).catch(function (err) {
+          //请求错误
+          console.log(err);
+        });
       }
     },
     mounted(){
-
+      this.handleSave();
     }
   }
 

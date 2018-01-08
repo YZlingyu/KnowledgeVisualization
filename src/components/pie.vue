@@ -18,6 +18,10 @@
             </el-select>
           </el-row>
           <el-row class="attribute-row">
+            <span class="label1">研究对象</span>
+            <el-input v-model="input8" placeholder="" class="input1 input2"></el-input>
+          </el-row>
+          <el-row class="attribute-row">
             <span class="label1">扇形半径</span>
             <el-input v-model="input1" placeholder="" class="input1 input2"></el-input>
           </el-row>
@@ -81,6 +85,7 @@
         input5: '',
         input6: '',
         input7: '',
+        input8: '',
         options: [{
           value: '选项1',
           label: '人工智能领域'

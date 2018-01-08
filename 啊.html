@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+
+    </head>
+<body>
+<div>
+  <label>请选择需要上传的文件:<br />
+    <a href="javascript:;" class="btn red" id="file">
+      <span class="glyphicon glyphicon-download-alt"></span> 打开
+    </a>
+    <span id="fileNameDes"></span>
+  </label>
+  <input type="file" id="FileSelect" name="userfile" />
+</div>
+<div>
+  <textarea id="showFile" name="showFile" class="form-control" maxlength="10000"  style='width:500px;resize: none;' placeholder="文本输入"></textarea>
+</div>
+<script>
+  $("#FileSelect").change(function(){
+    var fileSelector = $("#FileSelect")[0].files;
+    var file = fileSelector[0];
+console.log($("#FileSelect")[0])
+    $('#fileNameDes').text(fileSelector[0].name);
+
+    var reader = new FileReader();
+    reader.onload = function()
+    {
+      document.getElementById("showFile").innerHTML = this.result;
+    };
+    reader.readAsText(file);
+
+  });
+</script>
+</body>
+</html>

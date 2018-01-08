@@ -106,6 +106,11 @@
 
       }
     },
+    mounted(){
+      if(document.getElementsByClassName("left-box")[0].offsetHeight<document.getElementsByClassName("right-box")[0].offsetHeight){
+        document.getElementsByClassName("left-box")[0].style.height=document.getElementsByClassName("right-box")[0].offsetHeight-20+"px";
+      }
+    },
     components: {
       pieGraph
     }

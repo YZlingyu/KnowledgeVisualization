@@ -3,6 +3,15 @@
     <el-row style="text-align:center;margin-top: 20px;">
       <h1 style="display:inline-block;margin-right: 20px;">数据集名称</h1>
       <el-input v-model="input1" placeholder="" class="para-input2" style="width: 200px;display:inline-block;"></el-input>
+      <h1 style="display:inline-block;margin-right: 20px;margin-left: 40px;">数据类型</h1>
+      <el-select v-model="value" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
     </el-row>
    <el-upload
       class="upload-demo"
@@ -34,7 +43,18 @@
         uploadData:{
           uploadTime: "",
           datasetId: ""
-        }
+        },
+        options: [{
+          value: '1',
+          label: '关系型数据'
+        }, {
+          value: '2',
+          label: '层级数据'
+        }, {
+          value: '3',
+          label: '地理信息数据'
+        }],
+        value: ''
       };
     },
     methods: {
